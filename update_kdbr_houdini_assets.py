@@ -25,13 +25,15 @@ def compare_files(file0, file1):
 	try:
 		local_modified = os.stat(file0).st_mtime
 		repo_modified = os.stat(file1).st_mtime
+		filename = os.path.split(file0)[1]
 		if local_modified < repo_modified:
-			#print "repo is up to date"
+			print "{} is up to date".format(filename)
 			pass
 		else:
-			dest = os.path.split()[0]
+			dest = os.path.split(file1)[0]
 			copy_file(file0, dest)
-			print "{} copied to {}".format(file0, dest)
+			 
+			print "{} is out of date. updating in {}".format(filename, dest)
 	except OSError:
 		print "file does not exist"
 
@@ -44,11 +46,10 @@ def copy_file(file, dest_dir):
 def compare_dirs(path0, path1):
 	list0 = [f for f in os.listdir(path0) if os.path.isfile(os.path.join(path0,f))]
 	list1 = [f for f in os.listdir(path1) if os.path.isfile(os.path.join(path1,f))]
-	#print list0, "\n", list1
 	for file0 in list0:
 
 		if file0 in list1:
-			print "{} alredy exists in {} ... checking for updates ...".format(file0, path1)
+			#print "{} alredy exists in {} ... checking for updates ...".format(file0, path1)
 			compare_files(os.path.join(path0,file0),  os.path.join(path1,file0))
 
 		else:
