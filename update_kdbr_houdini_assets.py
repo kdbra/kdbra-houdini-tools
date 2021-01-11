@@ -10,6 +10,15 @@ repo_dirs = [ l for l in os.listdir(pwd) if os.path.isdir(os.path.join(pwd,l)) a
 mode = raw_input("Type 'artist' or 'TD' to choose sync direction:")
 mode = 'artist' if mode != 'TD' else mode
 print "You've chosen {} mode".format(mode)
+check = True
+if mode == "TD":
+	check = False
+	while check == False:	
+		fck = raw_input("'TD' mode requires password:")
+		check = True if fck == "iddqd" else False
+		if not check:
+			print "don't play tricks with me dude"
+
 
 def update_repo_dirs(local_dirs, pwd):
 	repo_dirs = [d for d in os.listdir(pwd) if os.path.isdir(os.path.join(pwd,d))]
