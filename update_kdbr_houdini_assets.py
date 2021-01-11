@@ -6,10 +6,10 @@ kdbra = os.environ["KDBRA_HOUDINI_ASSETS"]
 pwd = os.environ["PWD"]
 search_names = ["otls", "hda", "toolbar"]
 local_dirs = [ l for l in os.listdir(kdbra) if os.path.isdir(os.path.join(kdbra,l)) and any(n in l for n in search_names)]
-
-mode = input("Type 'user' or 'TD' to choose sync direction:")
-mode = 'user' if mode == '' else mode
-print "You chosen {} mode".format(mode)
+repo_dirs = [ l for l in os.listdir(pwd) if os.path.isdir(os.path.join(pwd,l)) and any(n in l for n in search_names)]
+mode = raw_input("Type 'artist' or 'TD' to choose sync direction:")
+mode = 'artist' if mode != 'TD' else mode
+print "You've chosen {} mode".format(mode)
 
 def update_repo_dirs(local_dirs, pwd):
 	repo_dirs = [d for d in os.listdir(pwd) if os.path.isdir(os.path.join(pwd,d))]
@@ -26,7 +26,8 @@ def compare_files(file0, file1):
 		local_modified = os.stat(file0).st_mtime
 		repo_modified = os.stat(file1).st_mtime
 		if local_modified < repo_modified:
-			print "repo is up to date"
+			#print "repo is up to date"
+			pass
 		else:
 			dest = os.path.split()[0]
 			copy_file(file0, dest)
@@ -55,9 +56,15 @@ def compare_dirs(path0, path1):
 			copy_file(os.path.join(path0,file0),path1)
 
 
-update_repo_dirs(local_dirs,pwd)
+if mode == 'TD':
+	update_repo_dirs(local_dirs,pwd)
 
-for local_dir in local_dirs:
-	
-	compare_dirs(os.path.join(kdbra, local_dir),os.path.join(pwd, local_dir))
+	for local_dir in local_dirs:
+		
+		compare_dirs(os.path.join(kdbra, local_dir),os.path.join(pwd, local_dir))
+else:
+	update_repo_dirs(repo_dirs,kdbra)
 
+	for repo_dir in repo_dirs:
+		
+		compare_dirs(os.path.join(pwd, repo_dir),os.path.join(kdbra, repo_dir))
