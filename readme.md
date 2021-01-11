@@ -1,0 +1,1 @@
+$KDBRA_HOUDINI_ASSETS env variable should be set when run update_houdini_tools.py
