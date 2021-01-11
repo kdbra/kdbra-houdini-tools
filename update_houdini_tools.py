@@ -7,6 +7,8 @@ pwd = os.environ["PWD"]
 search_names = ["otls", "hda", "toolbar"]
 local_dirs = [ l for l in os.listdir(kdbra) if os.path.isdir(os.path.join(kdbra,l)) and any(n in l for n in search_names)]
 
+
+
 def update_repo_dirs(local_dirs, pwd):
 	repo_dirs = [d for d in os.listdir(pwd) if os.path.isdir(os.path.join(pwd,d))]
 	for ld in local_dirs:
@@ -56,3 +58,4 @@ update_repo_dirs(local_dirs,pwd)
 for local_dir in local_dirs:
 	
 	compare_dirs(os.path.join(kdbra, local_dir),os.path.join(pwd, local_dir))
+
