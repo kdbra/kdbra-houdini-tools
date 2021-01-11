@@ -7,7 +7,9 @@ pwd = os.environ["PWD"]
 search_names = ["otls", "hda", "toolbar"]
 local_dirs = [ l for l in os.listdir(kdbra) if os.path.isdir(os.path.join(kdbra,l)) and any(n in l for n in search_names)]
 
-
+mode = input("Type 'user' or 'TD' to choose sync direction:")
+mode = 'user' if mode == '' else mode
+print "You chosen {} mode".format(mode)
 
 def update_repo_dirs(local_dirs, pwd):
 	repo_dirs = [d for d in os.listdir(pwd) if os.path.isdir(os.path.join(pwd,d))]
