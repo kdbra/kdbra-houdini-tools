@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <tool name="opener" label="Open/Create" icon="SOP_file">
+    <script scriptType="python"><![CDATA[#import hou
+import os
+from PySide2 import QtCore, QtUiTools, QtWidgets
+
+root = "D:\\"
+prod = "test_prod"
+project = "test_project"
+
+path_to_shots = os.path.join(root, prod, project, "shots")
+scenes = os.listdir(path_to_shots)
+shots = dict.fromkeys(scenes)
+
+def verStr(v):
+    ver = str(v)
+    le = len(ver)
+    l = 3
+    zs = l - le
+    version = "0" * zs + ver
+    return version
+
+def checkV(shot_path):
+    hdir = os.path.join(shot_path, "hou")
+    ishdir = os.path.exists(os.path.join(shot_path, "hou"))
+    if ishdir == False:
+        os.mkdir(hdir)
+    files = os.listdir(hdir)
+    included_extensions = ['hip','hiplc', 'hipnc']
+    hips = []
+    if len(files) != 0:
+        hips = [fn for fn in os.listdir(hdir)
+            if any(fn.endswith(ext) for ext in included_extensions)]
+
+    if len(hips) != 0:
+        
+        vers = []
+        for name in hips:
+            namext = os.path.splitext(name)
+            name = namext[0]
+            ext = namext[1]
+            try:
+                ver = int(name.split("_v")[-1])
+                
+                vers.append(ver)
+                iship = True
+            except ValueError:
+                iship = False
+                ver = 0
+        if iship == True:
+            ver = max(vers)
+            
+    else:
+        iship = False
+        ver = 0
+    
+    return (iship, ver)
+
+def path_name(path, name, ver=0):
+    path_name = os.path.join(path, "hou", name + "_v" + verStr(ver) + ".hip")
+    return path_name
+    
+def opcreate(iship, path, name, isup, ver=0):
+    path_n = path_name(path, name, ver)
+    if iship == False:
+        if isup == True:
+            if hou.hipFile.name != "untitled":
+                hou.hipFile.save()
+            ver += 1
+            path_n = path_name(path, name, verStr(ver))
+            if True:
+                hou.hipFile.clear()
+            hou.hipFile.save(path_n)
+        else:
+            if hou.hipFile.name != "untitled":
+                hou.hipFile.save()
+            path_n = path_name(path, name, verStr(ver))
+            if True:
+                hou.hipFile.clear()
+            hou.hipFile.save(path_n)
+            
+            
+    else:
+        if isup == True:
+            if hou.hipFile.name != "untitled":
+                hou.hipFile.save()
+            path_nop = path_name(path, name, verStr(ver))
+            pathh = os.path.join(path, "hou").replace(os.sep, "/")
+            hou.hscript("set HIP=" + pathh)
+            hou.hipFile.load(name + "_v" + verStr(ver) + ".hip")
+            ver += 1
+            path_n = path_name(path, name, ver)
+            hou.hipFile.save(path_n)
+        else:
+            if hou.hipFile.name != "untitled":
+                hou.hipFile.save()
+            
+            path = os.path.join(path, "hou").replace(os.sep, "/")
+            hou.hscript("set HIP=" + path)
+            hou.hipFile.load(name + "_v" + verStr(ver) + ".hip")
+            
+for sc in scenes:
+    shots_path = os.path.join(path_to_shots, sc)
+    scshts = os.listdir(shots_path)
+    shots[sc] = scshts
+    
+class OpenCreate(QtWidgets.QWidget):
+    def __init__(self):
+        global upv
+        super(OpenCreate,self).__init__()
+        ui_file = 'D:/tools/ui_test/combo.ui'
+        self.ui = QtUiTools.QUiLoader().load(ui_file, parentWidget=self)
+        self.setParent(hou.ui.mainQtWindow(), QtCore.Qt.Window)
+        self.setStyleSheet(hou.qt.styleSheet())
+        self.setFixedSize(380, 131)
+        self.ui.scene.addItems(scenes)
+        self.ui.scene.currentTextChanged.connect(self.setShots)
+        #pic = self.ui.label.pixmap()
+        #print(pic)
+        self.setShots()
+        
+        
+        self.ui.ok.clicked.connect(self.ok)
+        self.ui.cancel.clicked.connect(self.cncl)
+        
+        upv = self.ui.upv.checkState()
+        self.ui.upv.stateChanged.connect(self.upState)
+    
+    def upState(self):
+        upv = self.ui.upv.checkState()
+        
+    def ok(self):
+        sc = self.ui.scene.currentText()
+        sh = self.ui.shot.currentText()
+        pth = os.path.join(path_to_shots, sc, sh)
+        #print(pth)
+        name = sc + "_" + sh
+        ch = checkV(pth)
+        #print(ch)
+        isup = bool(self.ui.upv.checkState())
+        opcreate(ch[0], pth, name, isup, ch[1])
+        self.close()
+    
+    def cncl(self):
+        self.close()
+    
+    def setShots(self):
+        cur = self.ui.scene.currentText()
+        self.ui.shot.clear()
+        self.ui.shot.addItems(shots[cur])
+        
+win = OpenCreate()
+win.show()
+]]></script>
+  </tool>
+</shelfDocument>

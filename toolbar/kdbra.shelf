@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <toolshelf name="kdbra" label="Kdbra">
+    <memberTool name="create_merges"/>
+    <memberTool name="find_replace"/>
+    <memberTool name="opener"/>
+    <memberTool name="export_nodes"/>
+    <memberTool name="kdbr_import_json_camera"/>
+    <memberTool name="export_selected_nodes"/>
+    <memberTool name="import_3de_2d_pts_as_nulls"/>
+  </toolshelf>
+</shelfDocument>

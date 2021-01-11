@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <tool name="create_merges" label="Create Merges" icon="SOP_merge">
+    <script scriptType="python"><![CDATA[import toolutils
+import time
+
+nodes = hou.selectedNodes()
+
+obj = hou.node(nodes[0].parent().parent().path())
+k = 0
+
+viewer = toolutils.sceneViewer()
+viewer.setPin(True)
+
+
+
+for node in nodes:
+    geonode = obj.createNode("geo", str(node))
+    geonode.moveToGoodPosition()
+    obmrg = geonode.createNode("object_merge", str(node))
+    obmrg.parm("./objpath1").set(node.path())
+    p = obmrg.parm("./xformtype").set(1)
+    k+=1
+
+
+viewer.setPromptMessage("You have created %s object merge(s)"%(k) + "\n Viewer pinned")
+]]></script>
+  </tool>
+</shelfDocument>

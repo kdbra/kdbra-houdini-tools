@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <tool name="find_replace" label="Find&amp;ReplaceParm" icon="SOP_font">
+    <script scriptType="python"><![CDATA[
+
+
+import os
+from PySide2 import QtCore, QtUiTools, QtWidgets
+
+
+
+class fReplaceParm(QtWidgets.QWidget):
+    def __init__(self):
+        super(fReplaceParm,self).__init__()
+        ui_file = 'D:/tools/ui_test/find_replace_parm.ui'
+        self.ui = QtUiTools.QUiLoader().load(ui_file, parentWidget=self)
+        self.setParent(hou.ui.mainQtWindow(), QtCore.Qt.Window)
+        self.setStyleSheet(hou.qt.styleSheet())
+        self.setFixedSize(441, 131)
+        
+        
+        
+        self.ui.ok.clicked.connect(self.ok)
+        self.ui.cancel.clicked.connect(self.cncl)
+        
+        cn = self.ui.cn.checkState()
+        self.ui.cn.stateChanged.connect(self.cnState)
+
+    def ok(self):
+        find = self.ui.fd.text()
+        replace = self.ui.replace.text()
+        sel = hou.selectedNodes()
+        if find != "":
+            for n in sel:
+                for parms in n.parms():
+                    try:
+                        newString = str(parms.eval()).replace(find, replace)
+                        parms.set(newString)
+                    except:
+                        pass
+                        #print ''
+                    try:
+                        newExpression = str(parms.expression()).replace(find, replace)
+                        parms.setExpression(newExpression)
+                    except:
+                        pass
+                        #print ''
+        
+    def cncl(self):
+        self.close()
+        
+    def cnState(self):
+        pass
+        #print("d")
+
+
+win = fReplaceParm()
+win.show()]]></script>
+  </tool>
+</shelfDocument>

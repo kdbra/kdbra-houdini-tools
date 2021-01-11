@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <tool name="kdbr_import_json_camera" label="Import Json Camera" icon="OBJ_camera">
+    <script scriptType="python"><![CDATA[import json, os
+import math as m
+path = hou.expandString(hou.ui.selectFile())
+name = os.path.basename(path).split(".")[0]
+
+cam = hou.node("/obj").createNode("cam", name)
+
+sensorw = float(hou.ui.readInput("Please enter sensor width")[1])
+
+file = json.loads(hou.readFile(path))
+keys = file.keys()
+
+matrix = file["cameraTransform"]
+res_x = file["imageWidth"]
+res_y = file["imageHeight"]
+tkeys = matrix.keys()
+matrix = hou.Matrix4(matrix[tkeys[0]])
+matrix = matrix.transposed()
+
+cam.setParmTransform(matrix)
+
+res = cam.parmTuple("res").set((res_x,res_y))
+fovx = file["horizontalFieldOfView"]
+focal = sensorw/(2*m.tan(fovx*0.5))
+
+
+cam.parm("focal").set(focal)
+cam.parm("aperture").set(sensorw)
+]]></script>
+  </tool>
+</shelfDocument>

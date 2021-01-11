@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <tool name="import_3de_2d_pts_as_nulls" label="Import 3de 2d pts as nulls" icon="NETWORKS_chop">
+    <helpText><![CDATA[This script imports 2d trackers from 3d Equalizer. 
+Houdini camera resolution must be exactly the same as 3de camera.
+1) Choose .txt file from 3de
+2) Select Camera
+3) Select geometry to project markers]]></helpText>
+    <script scriptType="python"><![CDATA[from os import path as pth
+
+def getCurrentNetworkEditorPane():
+    editors = [pane for pane in hou.ui.paneTabs() if isinstance(pane, hou.NetworkEditor) and pane.isCurrentTab()]
+    return editors[-1] 
+        
+
+def set_prms():
+    global f_path, cam_path, project_objs, subnet, chopnet
+    
+    pane = getCurrentNetworkEditorPane()
+    nodepos = pane.visibleBounds().center()
+    
+    f_path = hou.ui.selectFile(title="Pick 2d track txt")
+    cam_path = hou.ui.selectNode(title="Select Reference Camera",node_type_filter=hou.nodeTypeFilter.ObjCamera)
+    project_objs = hou.ui.selectNode(multiple_select=True,title="Select projection objects", node_type_filter=hou.nodeTypeFilter.ObjGeometry)
+    file_name = ".".join(pth.basename(f_path).split(".")[0:-1])
+    
+    subnet = hou.node("/obj").createNode("subnet", node_name=file_name)
+    subnet.setPosition(nodepos)
+
+
+
+def normalize_pos(pos, res):
+    x = hou.hmath.fit(pos.x(), 0, res.x(), 0,1)
+    y = hou.hmath.fit(pos.y(), 0, res.y(), 0,1)
+    norm_pos = hou.Vector2(x,y)
+    return norm_pos
+   
+def findz(pos, tr):
+    pos = pos * tr.inverted()
+    return pos.z()
+
+def fromNDC(cam_path,normal_pos, time):
+    cam = hou.node(cam_path)
+    tr = cam.worldTransformAtTime(time)
+    res = hou.Vector2(cam.parmTuple("./res").eval())
+    apx = cam.parm("./aperture").eval()
+    apy = (res.y()*apx) / res.x()
+    fl = cam.parm("./focal").eval()
+    asp = cam.parm("./aspect").eval()
+    res = hou.Vector2(cam.parmTuple("./res").eval())
+    apx = cam.parm("./aperture").eval()
+    apy = (res.y()*apx) / (res.x() * asp)
+    
+
+    xmax = abs(apx*.5*normal_pos.z()/fl)
+    ymax = abs(apy*.5*normal_pos.z()/fl)
+    x = hou.hmath.fit(normal_pos.x(),0,1,-xmax,xmax)
+    y = hou.hmath.fit(normal_pos.y(),0,1,-ymax,ymax)
+    wpos = hou.Vector3(x,y,normal_pos.z())
+    return wpos*tr
+
+
+
+
+
+    
+
+def read_2d_poins():  
+    array = open(f_path).readlines()
+    number_pts = int(array[0])
+    array.pop(0)
+    points = []
+    
+    for pt in range(number_pts):
+        ln = int(array[2])
+        coords = array[3:3+ln]
+        points.append(coords)
+        del array[:3+ln]
+
+    return points
+
+ 
+def import_pts(): 
+    points = read_2d_poins()
+    cam = hou.node(cam_path)
+    tr = cam.worldTransform()
+    cam_pos = hou.Vector3(tr.extractTranslates())
+    res = hou.Vector2(cam.parmTuple("./res").eval())
+    for ptnum, pt in enumerate(points):
+        new_node = subnet.createNode("null", node_name="point_"+str(ptnum).zfill(3))
+        keyFramesTX = []
+        keyFramesTY = []
+        keyFramesTZ = []
+        
+        for  i, line in enumerate(pt):
+            values = line.split(" ")
+            frame = int(values[0])
+            X = float(values[1])
+            Y = float(values[2])
+            keyx = hou.Keyframe()
+            keyy = hou.Keyframe()
+            keyz = hou.Keyframe()
+            keyx.setFrame(frame)
+            keyy.setFrame(frame)
+            keyz.setFrame(frame)
+
+            screen_pos = hou.Vector2(X, Y)
+            normal_pos = normalize_pos(screen_pos,res)
+            time = hou.frameToTime(frame)
+
+            if i == 0:
+                normal_pos = hou.Vector3(normal_pos.x(), normal_pos.y(), -.1)
+                pos = fromNDC(cam_path, normal_pos, time)
+                direction = (pos - cam_pos).normalized()
+                intpos = hou.Vector3()
+                intN = hou.Vector3()
+                uvw = hou.Vector3()
+                for pth in project_objs:
+                    objnd = hou.node(pth)
+                    nd = objnd.renderNode()
+                    geom = nd.geometry()
+                    ndtr = objnd.worldTransformAtTime(time)
+                    invtr = ndtr.inverted()
+                    tsp = ndtr.inverted().transposed()
+                    invp = cam_pos * invtr
+                    invd = direction * tsp
+                    intersect = geom.intersect(invp, invd, intpos,intN,uvw)
+                    intpos = intpos * ndtr
+                    if intersect >=0:
+                        break
+                z_depth = findz(intpos,tr)
+            
+            normal_pos = hou.Vector3(normal_pos.x(), normal_pos.y(), z_depth)
+            pos = fromNDC(cam_path, normal_pos, time)
+
+
+            keyx.setValue(pos.x())
+            keyy.setValue(pos.y())
+            keyz.setValue(pos.z())
+
+            
+            keyFramesTX.append(keyx)
+            keyFramesTY.append(keyy)
+            keyFramesTZ.append(keyz)
+
+        
+        new_node.parm("tx").setKeyframes(keyFramesTX)
+        new_node.parm("ty").setKeyframes(keyFramesTY)
+        new_node.parm("tz").setKeyframes(keyFramesTZ)
+
+set_prms()
+import_pts()]]></script>
+  </tool>
+</shelfDocument>
