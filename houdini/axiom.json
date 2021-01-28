@@ -1,0 +1,10 @@
+{
+	"env": [
+		{"AXIOM_SOLVER_PATH": "/01TB_HDD_01/houdini_packages/axiom"},
+		{"HOUDINI_DSO_PATH": "$AXIOM_SOLVER_PATH"},
+		{"AXIOM_NOCPU": 1}
+		
+	],
+	"path": "$AXIOM_SOLVER_PATH"
+	
+}

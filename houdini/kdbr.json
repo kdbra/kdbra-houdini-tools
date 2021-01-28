@@ -1,0 +1,13 @@
+
+{
+	"env": 
+	[
+		{
+			"KDBR": "/01TB_HDD_01/pipeline/houdini/kdbr"
+		},
+		{
+			"HOUDINI_PATH": "$HOUDINI_PATH:$KDBR"
+		}
+	]
+	
+}
