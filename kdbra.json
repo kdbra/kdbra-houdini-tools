@@ -4,7 +4,7 @@
         {
             "HOUDINI_PATH" : 
             {
-                "value": "/01TB_HDD_01/pipeline/houdini/kdbra",
+                "value": "~/pipeline/houdini/kdbra",
                 "method": "prepend"
             }
         }
