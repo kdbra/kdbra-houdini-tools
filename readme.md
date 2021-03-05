@@ -14,9 +14,9 @@ Also provides shelftools for:
   
 ## Installation
  
- 1. clone repository `git clone https://github.com/kdbra/pipeline.git`
+ 1. clone repository `git clone https://github.com/kdbra/kdbra-houdini-tools.git`
  2. put `kdbra.json` into `~/houdini{version}/packages` or `C:\users\user\houdini{version}\packages` depening on your system  
- 3. edit `kdbra.json`, replace `~` in line `"~/pipeline/houdini/kdbra"` with the actual path to repo location
+ 3. edit `kdbra.json`, replace `~` in line `"~/kdbra-houdini-tools/"` with the actual path to repo location
 
 ## Docs
  
