@@ -4,7 +4,7 @@
         {
             "HOUDINI_PATH" : 
             {
-                "value": "~/pipeline/houdini/kdbra",
+                "value": "~/kdbra-houdini-tools/",
                 "method": "prepend"
             }
         }
