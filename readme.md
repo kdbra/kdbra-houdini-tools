@@ -11,7 +11,11 @@ Toolset extends some Houdini aspects with several  new sop and obj nodes:
   
 Also provides shelftools for:
   - Import 3de4 2d point trackers
+ 
+## Reuqirements 
   
+  Houdini 18.5.408
+ 
 ## Installation
  
  1. clone repository `git clone https://github.com/kdbra/kdbra-houdini-tools.git`
