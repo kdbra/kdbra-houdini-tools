@@ -6,16 +6,20 @@ from os import path, listdir
 parser = argparse.ArgumentParser(description='Batch fix crowd cache')
 parser.add_argument('input_dir',type=str,
                     help='sequence directory')
+'''
 parser.add_argument('wrong_path',type=str,
                     help='search in *.geo for this path')
 parser.add_argument('new_path',type=str,
                     help='replace found path with this')
-
+'''
 args = parser.parse_args()
 
 input_dir = args.input_dir
-search_path = args.wrong_path
-new_path = args.new_path
+#search_path = args.wrong_path
+#new_path = args.new_path
+search_path = '/01TB_HDD_01/projects/Abrakadabra/sobor/assets/crowd'
+new_path = 'Z:/_Projects/2019/Sobor/3d/ASSETS/crowd'
+
 listd = listdir(input_dir)
 
 for item in listd:
