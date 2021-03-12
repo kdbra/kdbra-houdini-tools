@@ -3,21 +3,15 @@ import argparse, subprocess, glob, os.path
 
 parser = argparse.ArgumentParser(description='Batch convert Houdini geometry')
 parser.add_argument('input_dir', type=str, help='directory')
-parser.add_argument('input_format', type=str, help='input format')
-parser.add_argument('output_format', type=str, help='output format')
+parser.add_argument('-i', '--input_format', type=str, help='input format', default="geo")
+parser.add_argument('-o', '--output_format', type=str, help='output format', default="bgeo.sc")
 
 args = parser.parse_args()
-directory = args.input_dir
-informat = args.input_format ? args.input_format : 'geo'
-outformat = args.output_format ? args.output_format : 'bgeo.sc'
-
-items = glob.glob(path.join(directory, "*." + informat))
+items = glob.glob(os.path.join(args.input_dir, "*." + args.input_format))
 
 for item in items:
 	path, filename = os.path.split(item)
 	name, ext = os.path.splitext(filename)
-
-	new_path = os.path.join(path, '%s.%s' % (name, outformat))
-
+	new_path = os.path.join(path, '%s.%s' % (name, args.output_format))
 	subprocess.call(["gconvert", item, new_path])
-	print "{} converted to .bgeo.sc".format(item_path)
+	print "{} converted to {}".format(item, args.output_format)
