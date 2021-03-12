@@ -5,7 +5,7 @@ Toolset extends some Houdini aspects with several  new sop and obj nodes:
   - Mops (almost native)
   - RBD
   - Crowds
-  - HighFields
+  - HightFields
   - Camera workflow
   - Common geometry operators
   
