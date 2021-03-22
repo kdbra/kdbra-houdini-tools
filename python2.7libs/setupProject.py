@@ -8,10 +8,8 @@ args = parser.parse_args()
 
 pwd = os.getcwd()
 
-srcdir = os.path.abspath(args.src)
-
 # get shot list 
-shotslist = os.listdir(srcdir)
+shotslist = os.listdir(os.path.abspath(args.src))
 
 for shotname in shotslist:
     paths = []
