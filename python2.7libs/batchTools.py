@@ -1,8 +1,9 @@
 import glob, hou, datetime
-from os import path, listdir, environ
+import os.path
+from os import environ
 
 def fixCrowdCache(input_dir, search_path,new_path):
-    list_geos = glob.glob(path.join(input_dir, "*.geo"))
+    list_geos = glob.glob(os.path.join(input_dir, "*.geo"))
     for item in list_geos:
         tmp = ""
         with open(item, "r") as file:
@@ -13,12 +14,16 @@ def fixCrowdCache(input_dir, search_path,new_path):
         file.close()
         print "{} fixed".format(item)
 
-default_render_path = path.join(environ["HIP"], "render/*")
-def checkRenderTime(path_to_folder=default_render_path):
+
+def checkRenderTime(path="HIP", pattern="*"):
+    if not os.path.exists(path):
+        path = environ[path]
+    path_to_folder = os.path.join(path, pattern)
+     
     files = glob.glob(path_to_folder)
     mtimes = []
     for file in files:
-        mt = path.getmtime(file)
+        mt = os.path.getmtime(file)
         mtimes.append(mt)
     mtimes.sort()
     delta = mtimes[-1] - mtimes[0]
