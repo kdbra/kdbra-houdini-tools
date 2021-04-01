@@ -1,5 +1,7 @@
 import hou
 
+
+
 def menuItems(cls="point"):
     geo = hou.pwd().input(0).geometry()
     if cls == "point":
