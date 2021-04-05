@@ -13,5 +13,6 @@
     <memberTool name="kdbr_import_json_camera"/>
     <memberTool name="export_selected_nodes"/>
     <memberTool name="import_3de_2d_pts_as_nulls"/>
+    <memberTool name="rig pose clear translates"/>
   </toolshelf>
 </shelfDocument>
