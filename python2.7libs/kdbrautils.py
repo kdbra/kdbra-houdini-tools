@@ -16,3 +16,13 @@ def menuItems(cls="point"):
         tmp.append(a.name())
         tmp.append(a.name())
     return tmp
+
+def menuFromPointNames(inp=0):
+    geo = hou.pwd().input(inp).geometry()
+    names = geo.pointStringAttribValues("name")
+    tmp = []
+
+    for a in names:
+        tmp.append(str(a))
+        tmp.append(str(a))
+    return tmp
