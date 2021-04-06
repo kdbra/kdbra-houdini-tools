@@ -22,6 +22,7 @@ pane = toolutils.activePane(kwargs)
 selection = toolutils.sceneViewer().selectObjects(prompt="Select Terrain Geometry")
 terrain_path = selection[0].path()
 
+
 if not isinstance(pane, hou.NetworkEditor):
     pane = hou.ui.paneTabOfType(hou.paneTabType.NetworkEditor)
     if pane is None:
@@ -80,9 +81,8 @@ else: # We're creating this tool from the TAB menu inside a network editor
             pos[1] -= 0.220625
         h_extra_args += 'set arg2 = "' + str(pos[0]) + '"\n'
         h_extra_args += 'set arg3 = "' + str(pos[1]) + '"\n'
-h_extra_args += 'set arg10 = "' + str(terrain_path) + '"\n'
 h_extra_args += 'set argc = "' + str(num_args) + '"\n'
-            
+h_extra_args += 'set arg10 = "' + str(terrain_path) + '"\n'     
 pane_node = pane.pwd()
 child_type = pane_node.childTypeCategory().nodeTypes()
 
@@ -128,17 +128,21 @@ chautoscope $_obj_crowd +tx +ty +tz +rx +ry +rz +sx +sy +sz
 opset -d on -r off -h off -f off -y off -t off -l off -s off -u off -F on -c on -e on -b off -x off $_obj_crowd
 opexprlanguage -s hscript $_obj_crowd
 opuserdata -n '___Version___' -v '18.5.408' $_obj_crowd
+opuserdata -n '___toolcount___' -v '1' $_obj_crowd
+opuserdata -n '___toolid___' -v 'crowd_setup' $_obj_crowd
 opcf $_obj_crowd
 
 # Node $_obj_crowd_kdbra_crowd_formation_march1 (kdbra::Sop/kdbra_crowd_formation_march::1.2)
 set _obj_crowd_kdbra_crowd_formation_march1 = `run("opadd -e -n -v kdbra::kdbra_crowd_formation_march::1.2 kdbra_crowd_formation_march1")`
 oplocate -x `$arg2 + -3.7445206349206348` -y `$arg3 + 6.5071550671550673` $_obj_crowd_kdbra_crowd_formation_march1
 opparm $_obj_crowd_kdbra_crowd_formation_march1  remap_scale ( 2 )
-opparm $_obj_crowd_kdbra_crowd_formation_march1 cnt ( 14 ) rows ( 2 ) wsp ( 0.81899999999999995 ) gap ( 18.030000000000001 ) minscale ( 0.89999999888241289 ) usesp ( on ) animate ( 1.51 ) fix ( on ) remap_scale2pos ( 1 ) remap_scale2value ( 1 )
+opparm $_obj_crowd_kdbra_crowd_formation_march1 terrainsoppath ( $arg10 ) cnt ( 14 ) rows ( 2 ) wsp ( 0.81899999999999995 ) gap ( 18.030000000000001 ) minscale ( 0.89999999888241289 ) usesp ( on ) animate ( 1.51 ) fix ( on ) remap_scale2pos ( 1 ) remap_scale2value ( 1 )
 chautoscope $_obj_crowd_kdbra_crowd_formation_march1 +speed
 opset -d off -r off -h off -f off -y off -t off -l off -s off -u off -F on -c on -e on -b off $_obj_crowd_kdbra_crowd_formation_march1
 opexprlanguage -s hscript $_obj_crowd_kdbra_crowd_formation_march1
 opuserdata -n '___Version___' -v '' $_obj_crowd_kdbra_crowd_formation_march1
+opuserdata -n '___toolcount___' -v '1' $_obj_crowd_kdbra_crowd_formation_march1
+opuserdata -n '___toolid___' -v 'crowd_setup' $_obj_crowd_kdbra_crowd_formation_march1
 
 # Node $_obj_crowd_crowdsource1 (Sop/crowdsource::3.0)
 set _obj_crowd_crowdsource1 = `run("opadd -e -n -v crowdsource::3.0 crowdsource1")`
@@ -150,7 +154,7 @@ chkey -t 0 -v 0 -m 0 -a 0 -A 0 -T a  -F 'nprims(opinputpath(".", 0)) - 1' $_obj_
 chadd -t 0 0 $_obj_crowd_crowdsource1 randomcliptime
 chkey -t 0 -v 0 -m 0 -a 0 -A 0 -T a  -F '$T' $_obj_crowd_crowdsource1/randomcliptime
 chblockend
-opparm -V 4 $_obj_crowd_crowdsource1 setup ( 1 1 ) state ( BTL_march_rifle_forward_001 ) randomizecliptime ( on ) cliptimerandomness ( 4.4400000000000004 ) randomizelayer ( on ) randomizescale ( on ) randomscaleoffset ( 0 ) layerpattern_1 ( rus_0* )
+opparm -V 4 $_obj_crowd_crowdsource1 state ( BTL_march_rifle_forward_001 ) randomizecliptime ( on ) cliptimerandomness ( 4.4400000000000004 ) randomizelayer ( on ) randomizescale ( on ) randomscaleoffset ( 0 ) layerpattern_1 ( rus_0* )
 opset -d off -r off -h off -f off -y off -t off -l off -s off -u off -F on -c on -e on -b off $_obj_crowd_crowdsource1
 opexprlanguage -s hscript $_obj_crowd_crowdsource1
 opuserdata -n '___Version___' -v '4' $_obj_crowd_crowdsource1
@@ -163,6 +167,8 @@ oplocate -x `$arg2 + -5.6199900382995605` -y `$arg3 + -3.6929801589965829` $_obj
 opset -d on -r on -h off -f off -y off -t off -l off -s off -u off -F on -c on -e on -b off $_obj_crowd_kdbra_crowd_system
 opexprlanguage -s hscript $_obj_crowd_kdbra_crowd_system
 opuserdata -n '___Version___' -v '' $_obj_crowd_kdbra_crowd_system
+opuserdata -n '___toolcount___' -v '1' $_obj_crowd_kdbra_crowd_system
+opuserdata -n '___toolid___' -v 'crowd_setup' $_obj_crowd_kdbra_crowd_system
 opcf ..
 opcf $_obj_crowd
 
@@ -174,11 +180,13 @@ opparm -V 18.5.408 $_obj_crowd_object_merge1 xformtype ( local ) objpath1 ( $arg
 opset -d off -r off -h off -f off -y off -t off -l off -s off -u off -F on -c on -e on -b off $_obj_crowd_object_merge1
 opexprlanguage -s hscript $_obj_crowd_object_merge1
 opuserdata -n '___Version___' -v '18.5.408' $_obj_crowd_object_merge1
+opuserdata -n '___toolcount___' -v '1' $_obj_crowd_object_merge1
+opuserdata -n '___toolid___' -v 'crowd_setup' $_obj_crowd_object_merge1
 
 # Node $_obj_crowd_curve1 (Sop/curve)
 set _obj_crowd_curve1 = `run("opadd -e -n -v curve curve1")`
 oplocate -x `$arg2 + -4.4131975579975578` -y `$arg3 + 8.9079951159951154` $_obj_crowd_curve1
-opparm -V 18.5.408 $_obj_crowd_curve1 coords ( '18.7824,0,-0.408132 -0.443845,0,-3.12104 -21.3214,0,0.417536 ' )
+opparm -V 18.5.408 $_obj_crowd_curve1 coords ( '19.1661,-0.190989,-0.408018 -0.443845,0,-3.12104 -21.3214,0,0.417536 ' )
 opset -d off -r off -h on -f off -y off -t off -l off -s off -u off -F on -c on -e on -b off $_obj_crowd_curve1
 opexprlanguage -s hscript $_obj_crowd_curve1
 opuserdata -n '___Version___' -v '18.5.408' $_obj_crowd_curve1
@@ -210,6 +218,8 @@ oplocate -x `$arg2 + -1.1938791228207584` -y `$arg3 + -0.74339236719520596` $_ob
 opset -d off -r off -h off -f off -y off -t off -l off -s off -u off -F on -c on -e on -b off $_obj_crowd_out_terrain
 opexprlanguage -s hscript $_obj_crowd_out_terrain
 opuserdata -n '___Version___' -v '18.5.408' $_obj_crowd_out_terrain
+opuserdata -n '___toolcount___' -v '1' $_obj_crowd_out_terrain
+opuserdata -n '___toolid___' -v 'crowd_setup' $_obj_crowd_out_terrain
 
 # Node $_obj_crowd_null1 (Sop/null)
 set _obj_crowd_null1 = `run("opadd -e -n -v null null1")`
@@ -217,6 +227,8 @@ oplocate -x `$arg2 + -1.8909111396530704` -y `$arg3 + 4.47502735868117` $_obj_cr
 opset -d off -r off -h off -f off -y off -t on -l off -s off -u off -F on -c on -e on -b off $_obj_crowd_null1
 opexprlanguage -s hscript $_obj_crowd_null1
 opuserdata -n '___Version___' -v '18.5.408' $_obj_crowd_null1
+opuserdata -n '___toolcount___' -v '1' $_obj_crowd_null1
+opuserdata -n '___toolid___' -v 'crowd_setup' $_obj_crowd_null1
 
 # Node $_obj_crowd_null2 (Sop/null)
 set _obj_crowd_null2 = `run("opadd -e -n -v null null2")`
@@ -224,6 +236,8 @@ oplocate -x `$arg2 + -0.3384542788997722` -y `$arg3 + 4.47502735868117` $_obj_cr
 opset -d off -r off -h off -f off -y off -t on -l off -s off -u off -F on -c on -e on -b off $_obj_crowd_null2
 opexprlanguage -s hscript $_obj_crowd_null2
 opuserdata -n '___Version___' -v '18.5.408' $_obj_crowd_null2
+opuserdata -n '___toolcount___' -v '1' $_obj_crowd_null2
+opuserdata -n '___toolid___' -v 'crowd_setup' $_obj_crowd_null2
 
 # Node $_obj_crowd_OUT_crowd_source (Sop/null)
 set _obj_crowd_OUT_crowd_source = `run("opadd -e -n -v null OUT_crowd_source")`
@@ -240,6 +254,8 @@ oplocate -x `$arg2 + -9.6454965656372078` -y `$arg3 + 8.4134416239990237` $_obj_
 opset -d off -r off -h off -f off -y off -t off -l off -s off -u off -F on -c on -e on -b off $_obj_crowd_kdbra_crowd_agent_load
 opexprlanguage -s hscript $_obj_crowd_kdbra_crowd_agent_load
 opuserdata -n '___Version___' -v '' $_obj_crowd_kdbra_crowd_agent_load
+opuserdata -n '___toolcount___' -v '1' $_obj_crowd_kdbra_crowd_agent_load
+opuserdata -n '___toolid___' -v 'crowd_setup' $_obj_crowd_kdbra_crowd_agent_load
 oporder -e object_merge1 kdbra_crowd_formation_march1 curve1 curve2 crowdsource1 OUT_target_points out_terrain null1 null2 kdbra_crowd_system OUT_crowd_source kdbra_crowd_agent_load 
 opcf ..
 opset -p on $_obj_crowd
