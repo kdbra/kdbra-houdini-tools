@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shelfDocument>
+  <!-- This file contains definitions of shelves, toolbars, and tools.
+ It should not be hand-edited when it is being used by the application.
+ Note, that two definitions of the same element are not allowed in
+ a single file. -->
+
+  <tool name="fix_crowd_cache" label="Fix crowd cache" icon="hicon:/SVGIcons.index?SOP_agentdefinitioncache.svg">
+    <script scriptType="python"><![CDATA[import batchTools, hou
+directory = hou.expandString(hou.ui.selectFile(start_directory=hou.getenv("HIP"),file_type=hou.fileType.Directory))
+btn, inputs = hou.ui.readMultiInput("replace text in files", ("search", "replacement"), initial_contents=("JOB/assets/agents", "JOB/3d/ASSETS/crowd/agents"))
+
+batchTools.fixCrowdCache(directory, inputs[0], inputs[1])
+print("updated")]]></script>
+  </tool>
+</shelfDocument>

@@ -7,5 +7,6 @@
 
   <toolshelf name="sobor" label="Sobor">
     <memberTool name="crowd_setup"/>
+    <memberTool name="fix_crowd_cache"/>
   </toolshelf>
 </shelfDocument>
