@@ -12,7 +12,7 @@ def fixCrowdCache(input_dir, search_path,new_path):
         file = open(item, "w")
         file.write(tmp)
         file.close()
-        print "{} fixed".format(item)
+        print("{} fixed".format(item))
 
 
 def checkRenderTime(path="HIP", pattern="*"):
