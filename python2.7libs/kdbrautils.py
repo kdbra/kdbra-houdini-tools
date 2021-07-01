@@ -47,7 +47,7 @@ def menuFromAgentClips(inp="."):
 
     for a in clips:
         c = True
-
+        
         pattern = "[a-zA-Z_]*"
         s = re.search(pattern, a)
         a = s.group(0) + "*"

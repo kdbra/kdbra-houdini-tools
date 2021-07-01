@@ -14,5 +14,8 @@
     <memberTool name="export_selected_nodes"/>
     <memberTool name="import_3de_2d_pts_as_nulls"/>
     <memberTool name="rig pose clear translates"/>
+    <memberTool name="import_tex"/>
+    <memberTool name="copy_parms"/>
+    <memberTool name="paste_parms"/>
   </toolshelf>
 </shelfDocument>

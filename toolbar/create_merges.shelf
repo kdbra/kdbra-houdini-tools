@@ -7,16 +7,21 @@
 
   <tool name="create_merges" label="Create Merges" icon="SOP_merge">
     <script scriptType="python"><![CDATA[import toolutils
+from Tkinter import Tk 
 import time
 
 nodes = hou.selectedNodes()
-
-obj = hou.node(nodes[0].parent().parent().path())
+root = Tk()
+root.withdraw()
+clipb = root.clipboard_get()
+current_node = toolutils.sceneViewer().name()
+print clipb
 k = 0
 
-viewer = toolutils.sceneViewer()
-viewer.setPin(True)
 
+
+if len(nodes) == 0:
+    pass
 
 
 for node in nodes:
