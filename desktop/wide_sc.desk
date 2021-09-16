@@ -10,40 +10,40 @@ root {
         split 0.42394 V R {
             split 0.515193 H {
                 tabs 0 1 {
-                    pane pane1 -a 0 -l 10 -H /obj/ -T OBJ -m neteditor
+                    pane pane1 -a 0 -l 10 -H /obj/caterpillar/ -T SOP -m neteditor
                     pane panetab9 -a 0 -l 0 -H /obj/ -T OBJ -m python
                     pane panetab10 -a 0 -l 0 -H /obj/ -T OBJ -m textport
                 }
                 split 0.5 H R {
                     tabs 0 1 {
-                        pane panetab11 -a 0 -l 10 -H /obj/ -T OBJ -m parmeditor
-                        pane panetab5 -a 0 -l 10 -H /obj/ -T OBJ -m sceneview
-                        pane panetab14 -a 0 -l 10 -H /obj/ -T OBJ -m details
+                        pane panetab11 -a 0 -l 10 -H /obj/caterpillar/ -T SOP -m parmeditor
+                        pane panetab5 -a 0 -l 10 -H /obj/caterpillar/ -T SOP -m sceneview
+                        pane panetab14 -a 0 -l 10 -H /obj/caterpillar/ -T SOP -m details
                     }
                     tabs 0 1 {
-                        pane panetab12 -a 0 -l 10 -H /obj/ -T OBJ -m parmeditor
+                        pane panetab12 -a 0 -l 10 -H /obj/caterpillar/ -T SOP -m parmeditor
                     }
                 }
             }
             tabs 0 1 {
-                pane panetab2 -a 0 -l 10 -H /obj/ -T OBJ -m details
-                pane panetab8 -a 0 -l 10 -H /obj/ -T OBJ -m sceneview
+                pane panetab2 -a 0 -l 10 -H /obj/caterpillar/ -T SOP -m details
+                pane panetab8 -a 0 -l 10 -H /obj/caterpillar/ -T SOP -m sceneview
                 pane panetab6 -a 0 -l 0 -H /obj/ -T OBJ -m chaneditor
                 pane panetab15 -a 0 -l 10 -H /ch/ -T CHOPNET -m channelview
             }
         }
         tabs 0 1 {
-            pane panetab1 -a 0 -l 10 -H /obj/ -T OBJ -m sceneview
+            pane panetab1 -a 0 -l 10 -H /obj/caterpillar/ -T SOP -m sceneview
             pane panetab4 -a 0 -l 10 -H /img/ -T IMG -m imageview
-            pane panetab13 -a 0 -l 10 -H /obj/ -T OBJ -m iprviewer
-            pane panetab3 -a 0 -l 10 -H /obj/ -T OBJ -m details
+            pane panetab13 -a 0 -l 10 -H /obj/caterpillar/ -T SOP -m iprviewer
+            pane panetab3 -a 0 -l 10 -H /obj/caterpillar/ -T SOP -m details
             pane panetab7 -a 0 -l 10 -H /ch/ -T CHOPNET -m channelview
-            pane panetab16 -a 1 -l 10 -H /obj/ -T OBJ -m pythonpanel
+            pane panetab16 -a 1 -l 10 -H /obj/caterpillar/ -T SOP -m pythonpanel
         }
     }
 }
 shelfdock -o 1 -l icon_and_text -G "0.50 0.50" add shelf_set_1 shelf_set_2
-networkeditor -p '{\n	"showspareinputdep":"1",\n	"showchilddep":"1",\n	"showdep":"0",\n	"showtaskgraphperf":"0",\n	"taskgraphperfstatname":"Cook Time",\n	"perfstatname":"Time",\n	"showperfstats":"1",\n	"grouplistsplit":"0.75",\n	"showtree":"0",\n	"showtypesidebar":"0",\n	"taskgraphsortcriteria":"Automatic",\n	"showparmdialogmax":"1",\n	"treesplit":"0.25",\n	"palettesize":"150 150",\n	"typesidebarsplit":"0.25",\n	"taskgraphcollapsemode":"Off",\n	"workitemcolorattribute":"",\n	"gridmode":"0",\n	"overviewbounds":"0.000000 0.000000 228.705205 219.814520",\n	"overviewmode":"2",\n	"showgrouplist":"0",\n	"palettemode":"0",\n	"useworkitemcolorattribute":"1",\n	"showtasksmenu":"1",\n	"backgroundimageediting":"0",\n	"backgroundimagebrightness":"1.0",\n	"gridystep":"1.0",\n	"palettecolors":"",\n	"showmenu":"1",\n	"gridxstep":"2.0",\n	"showparmdialog":"0"\n}\n' pane1
+networkeditor -p '{\n	"showspareinputdep":"1",\n	"showchilddep":"1",\n	"showdep":"0",\n	"showtaskgraphperf":"0",\n	"taskgraphperfstatname":"Cook Time",\n	"perfstatname":"Time",\n	"showperfstats":"1",\n	"grouplistsplit":"0.75",\n	"showtree":"0",\n	"showtypesidebar":"0",\n	"taskgraphsortcriteria":"Automatic",\n	"showparmdialogmax":"1",\n	"treesplit":"0.25",\n	"palettesize":"150 150",\n	"typesidebarsplit":"0.25",\n	"taskgraphcollapsemode":"Off",\n	"workitemcolorattribute":"",\n	"gridmode":"0",\n	"overviewbounds":"0.000000 0.000000 228.399040 219.520257",\n	"overviewmode":"2",\n	"showgrouplist":"0",\n	"palettemode":"0",\n	"useworkitemcolorattribute":"1",\n	"showtasksmenu":"1",\n	"backgroundimageediting":"0",\n	"backgroundimagebrightness":"1.0",\n	"gridystep":"1.0",\n	"palettecolors":"",\n	"showmenu":"1",\n	"gridxstep":"2.0",\n	"showparmdialog":"0"\n}\n' pane1
 netcolumns -c display,xray,select,origin,capture,bone -n OBJ pane1
 netcolumns -c display,render,template,selectabletemplate,highlight,unload,bypass,lock -n SOP pane1
 netcolumns -c delscript,comment -n CHOPNET pane1
