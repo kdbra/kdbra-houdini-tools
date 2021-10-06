@@ -7,15 +7,15 @@
 
   <tool name="create_merges" label="Create Merges" icon="SOP_merge">
     <script scriptType="python"><![CDATA[import toolutils
-from Tkinter import Tk 
-import time
+#from Tkinter import Tk 
+#import time
 
 nodes = hou.selectedNodes()
-root = Tk()
-root.withdraw()
-clipb = root.clipboard_get()
+#root = Tk()
+#root.withdraw()
+#clipb = root.clipboard_get()
 current_node = toolutils.sceneViewer().name()
-print clipb
+#print clipb
 k = 0
 
 
@@ -25,7 +25,7 @@ if len(nodes) == 0:
 
 
 for node in nodes:
-    geonode = obj.createNode("geo", str(node))
+    geonode = hou.node("/obj").createNode("geo", str(node))
     geonode.moveToGoodPosition()
     obmrg = geonode.createNode("object_merge", str(node))
     obmrg.parm("./objpath1").set(node.path())
@@ -33,7 +33,7 @@ for node in nodes:
     k+=1
 
 
-viewer.setPromptMessage("You have created %s object merge(s)"%(k) + "\n Viewer pinned")
+#viewer.setPromptMessage("You have created %s object merge(s)"%(k) + "\n Viewer pinned")
 ]]></script>
   </tool>
 </shelfDocument>
